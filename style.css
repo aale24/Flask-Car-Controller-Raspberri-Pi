@@ -1,8 +1,15 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #cccccc;
+   
   }
-  
+   
   .navbar {
     overflow: hidden;
     position: fixed;
@@ -59,13 +66,6 @@ body {
   
   }
   
-  img {
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      width: 35%
-  }
-  
   button {
       background-color: Transparent;
       background-repeat:no-repeat;
@@ -83,11 +83,11 @@ body {
   
     /* Preserve aspet ratio */
     min-width: 100%;
-    min-height: 100%;
+    min-height: 50%;
   
       /* Full height */
-    height: 100%;
-  
+    height: 50%;
+    background-attachment: fixed;
   
     /* Center and scale the image nicely */
     background-position: center;
@@ -105,11 +105,81 @@ body {
     opacity: 0.5;
   }
   
-  body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      background-color: black;
+ 
+
+  /* Buttons */
+  #wrapper {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+  }
+  
+  #controls {
+    display: inline-grid;
+    position: absolute;
+    grid-column-gap: 0;
+    align-self: end;
+    /* bottom:40px;
+    left: 30px;
+    width:50%;
+    height: 30%; */
+
+    top: 80%;
+    left: 50%;
+    margin-top: -120px;
+    margin-left: -120px;
+    width: 200px;
+    height: 200px;
+    
+    align-content: center;
+    justify-content: space-around;
+    }
+  
+  .movements_control {
+    margin: 10px;
+    padding: 0;
+  }
+  
+ 
+
+  .movements_control img {
+    border-radius: 50%;
+    width: inherit;
+    height: inherit;
+  }
+
+  .movements_control img:active{
+    background-color: red;
+  }
+  
+  #keyboard_key_up {
+    grid-column-start: 2;
+  }
+  
+  #keyboard_key_left {
+    grid-column-start: 1;
+  }
+  
+  #keyboard_key_down {}
+  
+  #keyboard_key_right {
+    grid-column-start: 3;
+  }
+  
+  @media (min-width: 721px) {
+    .movements_control {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  
+  @media (max-width: 720px) {
+    .movements_control {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  #keyboard_key_play{
+    grid-column-start: 4;
   }
