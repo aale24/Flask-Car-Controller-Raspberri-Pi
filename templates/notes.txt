@@ -1,0 +1,1 @@
+<img  class="camera-bg" id="bg" class="center" src="{{ url_for('video_feed') }}">
