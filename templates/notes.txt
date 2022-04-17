@@ -1,1 +1,1 @@
-<img  class="camera-bg" id="bg" class="center" src="{{ url_for('video_feed') }}">
+<img  class="camera-bg, center" id="bg" src="{{ url_for('video_feed') }}" onload="resizeToMax(this.id);">

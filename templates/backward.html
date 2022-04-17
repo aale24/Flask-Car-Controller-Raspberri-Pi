@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="{{url_for('static', filename='jquery-3.6.0.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/script.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+
+<title>PiStream - Backward</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<body>
+
+<!-- <div class="main" id="newpost"> -->
+  <img  class="camera-bg, center" id="bg" src="{{ url_for('video_feed') }}" onload="resizeToMax(this.id);">
+  <!-- </div> -->
+
+
+<div class="top-right-logo">
+  <a></a>Camera Stream - Backward</a>
+</div>
+
+
+
+
+<div id="controls">
+  <a id="keyboard_key_up"  href="{{ url_for('forward') }}"class="movements_control" style="height: 70px; width: 70px;"><img src="{{url_for('static', filename='Source/icons8-scroll-up-100.png')}}"/></a>
+  <a id="keyboard_key_left" href="{{ url_for('left') }}" class="movements_control" style="height: 70px; width: 70px;"><img src="{{url_for('static', filename='Source/icons8-back-arrow-100.png')}}" /></a>
+  <a id="keyboard_key_down" href="{{ url_for('backward') }}" class="movements_control" 
+  style="height: 70px; width: 70px; background-color: red; border-radius: 50%;"><img src="{{url_for('static', filename='Source/icons8-scroll-down-100.png')}}" /></a>
+  <a id="keyboard_key_right" href="{{ url_for('right') }}" class="movements_control" style="height: 70px; width: 70px;"><img src="{{url_for('static', filename='Source/icons8-forward-button-100.png')}}" /></a>
+  <a id="keyboard_key_play" href="{{ url_for('stop') }}" class="movements_control" style="height: 70px; width: 70px;"><img src="{{url_for('static', filename='Source/icons8-pause-button-100.png')}}" /></a>
+
+</div>
+
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+</body>
+</html>
+
