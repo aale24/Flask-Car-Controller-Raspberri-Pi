@@ -1,7 +1,7 @@
 import time,sys
 import RPi.GPIO as GPIO
 import mutual
-
+from functools import partial
 
 class ControlCar:
 	def __init__(self):
@@ -43,7 +43,7 @@ class ControlCar:
 		self.right_dir=mutual.right
 
 		self.acceptable_dirs=[self.forward_dir,self.back_dir,self.left_dir,self.right_dir]
-		self.functions=[self.drive,self.reverse,self.left,self.right]
+		self.functions=[partial(self.turn,100,100,True,False),partial(self.turn,100,100,False,True),partial(self.turn,100,100,False,False),partial(self.turn,100,100,True,True)]
 		self.dirs_and_functions=dict(zip(self.acceptable_dirs,self.functions))
 		
 		self.sleep_time=0.05
@@ -162,5 +162,3 @@ if __name__ == '__main__':
 	time.sleep(2)
 	test.turn(0, 0, True, False)
 	test.stop()
-
-
