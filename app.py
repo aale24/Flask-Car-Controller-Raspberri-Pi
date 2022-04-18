@@ -11,6 +11,7 @@ my_car = carActuation.ControlCar()
 
 pi_camera = VideoCamera(flip=False) # flip pi camera if upside down.
 
+#initialize flags
 stopFlagForward = 1
 stopFlagBackward = 1
 stopFlagRight = 1
@@ -38,74 +39,88 @@ def video_feed():
 @app.route("/stop")
 def stop():
     print ('stop')
-    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
-    stopFlagForward = 1
-    stopFlagBackward = 1
-    stopFlagRight = 1
-    stopFlagLeft = 1
+    stopFunction('stop')
     time.sleep(1)
+    print('Stop')
     return render_template('stop.html')
 
 @app.route("/forward")
 def forward():
     print ('forward')
-    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
-    stopFlagForward = 0
-    stopFlagBackward = 1
-    stopFlagRight = 1
-    stopFlagLeft = 1
+    carFunction('drive')
     time.sleep(1)
     while True:
         if (stopFlagForward == 1):
             break
-        my_car.drive()
+        print('Drive')
+        # my_car.drive()
     return render_template('forward.html')
     
 @app.route("/backward")
 def backward():
     print ('backward')
-    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
-    stopFlagBackward = 0
-    stopFlagForward = 1
-    stopFlagRight = 1
-    stopFlagLeft = 1
+    carFunction('back')
     time.sleep(1)
     while True:
         if (stopFlagBackward == 1):
             break
-        my_car.reverse()
+        print('Reverse')
+        # my_car.reverse()
     return render_template('backward.html')
 
 @app.route("/left")
 def left():
     print ('left')
-    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
-    stopFlagLeft = 0
-    stopFlagForward = 1
-    stopFlagBackward = 1
-    stopFlagRight = 1
+    carFunction('left')
     time.sleep(1)
     while True:
         if (stopFlagLeft == 1):
             break
-        my_car.left()
+        print('Left')
+        # my_car.left()
     return render_template('left.html')
 
 @app.route("/right")
 def right():
     print ('right')
-    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
-    stopFlagRight = 0
-    stopFlagForward = 1
-    stopFlagBackward = 1
-    stopFlagLeft = 1
+    carFunction('right')
     time.sleep(1)
     while True:
         if (stopFlagRight == 1):
             break
-        my_car.right()
+        print('Right')
+        # my_car.right()
     return render_template('right.html')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
 
+
+
+def carFunction(function):
+    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
+    if (function == 'stop'): #stop
+        stopFlagLeft = 1
+        stopFlagForward = 1
+        stopFlagBackward = 1
+        stopFlagRight = 1
+    if (function == 'drive'): # drive
+        stopFlagLeft = 1
+        stopFlagForward = 0
+        stopFlagBackward = 1
+        stopFlagRight = 1
+    if (function == 'back'): #back
+        stopFlagLeft = 1
+        stopFlagForward = 1
+        stopFlagBackward = 0
+        stopFlagRight = 1
+    if (function == 'right'): #right
+        stopFlagLeft = 1
+        stopFlagForward = 1
+        stopFlagBackward = 1
+        stopFlagRight = 0
+    if (function == 'left'): #left
+        stopFlagLeft = 0
+        stopFlagForward = 1
+        stopFlagBackward = 1
+        stopFlagRight = 1
