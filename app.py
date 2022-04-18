@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,Response
 from camera import VideoCamera
 import time
 import threading
 import os
+import Actuation
+
+my_car=Actuation.ControlCar()
 
 pi_camera = VideoCamera(flip=False) # flip pi camera if upside down.
 
@@ -28,26 +31,40 @@ def video_feed():
 @app.route("/stop")
 def stop():
     print ('stop')
+    my_car.stop()
     return render_template('stop.html')
 
 @app.route("/forward")
 def forward():
     print ('forward')
+    my_car.stop()
+    while True:
+        print("Hello")
+        my_car.drive()
     return render_template('forward.html')
     
 @app.route("/backward")
 def backward():
     print ('backward')
+    my_car.stop()
+   # while True:
+    #    my_car.reverse()
     return render_template('backward.html')
 
 @app.route("/left")
 def left():
     print ('left')
+    my_car.stop()
+    while True:
+        my_car.left()
     return render_template('left.html')
 
 @app.route("/right")
 def right():
     print ('right')
+    my_car.stop()
+    while True:
+        my_car.right()
     return render_template('right.html')
 
 if __name__ == '__main__':
