@@ -1,18 +1,20 @@
-from flask import Flask, render_template, request,Response
-from app.camera import VideoCamera
+from flask import Flask, render_template, request, Response
+import sys
+sys.path.append('app')
+from camera import VideoCamera
 import time
 import threading
 import os
-import app.carActuation
+import carActuation
 
-my_car = app.carActuation.ControlCar()
+my_car = carActuation.ControlCar()
 
 pi_camera = VideoCamera(flip=False) # flip pi camera if upside down.
 
-stopFlagFarward = 0
-stopFlagBackward = 0
-stopFlagRight = 0
-stopFlagLeft = 0
+stopFlagForward = 1
+stopFlagBackward = 1
+stopFlagRight = 1
+stopFlagLeft = 1
 
 # App Globals (do not edit)
 app = Flask(__name__)
@@ -36,22 +38,25 @@ def video_feed():
 @app.route("/stop")
 def stop():
     print ('stop')
-    stopFlagFarward = 1
+    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
+    stopFlagForward = 1
     stopFlagBackward = 1
     stopFlagRight = 1
     stopFlagLeft = 1
+    time.sleep(1)
     return render_template('stop.html')
 
 @app.route("/forward")
 def forward():
     print ('forward')
-    stopFlagFarward = 0
+    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
+    stopFlagForward = 0
     stopFlagBackward = 1
     stopFlagRight = 1
     stopFlagLeft = 1
+    time.sleep(1)
     while True:
-        if (stopFlagFarward == 1):
-            stopFlagFarward = 0
+        if (stopFlagForward == 1):
             break
         my_car.drive()
     return render_template('forward.html')
@@ -59,13 +64,14 @@ def forward():
 @app.route("/backward")
 def backward():
     print ('backward')
+    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
     stopFlagBackward = 0
-    stopFlagFarward = 1
+    stopFlagForward = 1
     stopFlagRight = 1
     stopFlagLeft = 1
+    time.sleep(1)
     while True:
         if (stopFlagBackward == 1):
-            stopFlagBackward = 0
             break
         my_car.reverse()
     return render_template('backward.html')
@@ -73,13 +79,14 @@ def backward():
 @app.route("/left")
 def left():
     print ('left')
+    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
     stopFlagLeft = 0
-    stopFlagFarward = 1
+    stopFlagForward = 1
     stopFlagBackward = 1
     stopFlagRight = 1
+    time.sleep(1)
     while True:
         if (stopFlagLeft == 1):
-            stopFlagLeft = 0
             break
         my_car.left()
     return render_template('left.html')
@@ -87,13 +94,14 @@ def left():
 @app.route("/right")
 def right():
     print ('right')
+    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
     stopFlagRight = 0
-    stopFlagFarward = 1
+    stopFlagForward = 1
     stopFlagBackward = 1
     stopFlagLeft = 1
+    time.sleep(1)
     while True:
         if (stopFlagRight == 1):
-            stopFlagRight = 0
             break
         my_car.right()
     return render_template('right.html')
