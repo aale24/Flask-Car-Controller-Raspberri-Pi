@@ -146,6 +146,7 @@ body {
     border-radius: 50%;
     width: inherit;
     height: inherit;
+    background-color: white;
   }
 
   .movements_control img:active{
