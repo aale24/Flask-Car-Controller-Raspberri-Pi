@@ -11,7 +11,7 @@ my_car = carActuation.ControlCar()
 
 pi_camera = VideoCamera(flip=False) # flip pi camera if upside down.
 
-#initialize flags
+#initialize stopFlags
 stopFlagForward = 1
 stopFlagBackward = 1
 stopFlagRight = 1
@@ -19,11 +19,11 @@ stopFlagLeft = 1
 
 # App Globals (do not edit)
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'sdfhsdj sdf23'
+app.config['SECRET_KEY'] = '123456789'
 
 
 def gen(camera):
-    #get camera frame
+    # Get camera frame
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
@@ -31,96 +31,73 @@ def gen(camera):
 
 @app.route('/video_feed')
 def video_feed():
+    # function to output camera
     return Response(gen(pi_camera),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route("/")
-@app.route("/stop")
+@app.route("/") # Flask webserver principal page
+@app.route("/stop") 
 def stop():
-    print ('stop')
-    stopFunction('stop')
-    time.sleep(1)
-    print('Stop')
-    return render_template('stop.html')
+    # send request to stop movement
+    carFunction('stop')
+    return render_template('index.html')
 
-@app.route("/forward")
+@app.route("/drive") 
 def forward():
-    print ('forward')
+    # send request to move the car forward
     carFunction('drive')
-    time.sleep(1)
     while True:
         if (stopFlagForward == 1):
             break
-        print('Drive')
-        # my_car.drive()
-    return render_template('forward.html')
+        my_car.drive()
     
-@app.route("/backward")
+@app.route("/reverse") 
 def backward():
-    print ('backward')
-    carFunction('back')
-    time.sleep(1)
+    # send request to move the car backward
+    carFunction('reverse')
     while True:
         if (stopFlagBackward == 1):
             break
-        print('Reverse')
-        # my_car.reverse()
-    return render_template('backward.html')
+        my_car.reverse()
 
-@app.route("/left")
+@app.route("/left") 
 def left():
-    print ('left')
+    # send request to move the car to the left
     carFunction('left')
-    time.sleep(1)
     while True:
         if (stopFlagLeft == 1):
             break
-        print('Left')
-        # my_car.left()
-    return render_template('left.html')
+        my_car.left()
 
-@app.route("/right")
+@app.route("/right") 
 def right():
-    print ('right')
+    # send request to move the car to the right
     carFunction('right')
-    time.sleep(1)
     while True:
         if (stopFlagRight == 1):
             break
-        print('Right')
-        # my_car.right()
-    return render_template('right.html')
+        my_car.right()
+
+
+def carFunction(function): # this function is used to stop all processed before start the new process
+    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
+    stopFlagForward = 1
+    stopFlagBackward = 1
+    stopFlagRight = 1
+    stopFlagLeft = 1
+    # if (function == 'stop'): #stop
+        # keep the value of flags equal to 1
+    if (function == 'drive'):
+        stopFlagForward = 0 
+    if (function == 'reverse'):
+        stopFlagBackward = 0
+    if (function == 'right'):
+        stopFlagRight = 0
+    if (function == 'left'):
+        stopFlagLeft = 0
+    time.sleep(0.5)
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
-
-
-
-def carFunction(function):
-    global stopFlagForward, stopFlagBackward, stopFlagRight, stopFlagLeft
-    if (function == 'stop'): #stop
-        stopFlagLeft = 1
-        stopFlagForward = 1
-        stopFlagBackward = 1
-        stopFlagRight = 1
-    if (function == 'drive'): # drive
-        stopFlagLeft = 1
-        stopFlagForward = 0
-        stopFlagBackward = 1
-        stopFlagRight = 1
-    if (function == 'back'): #back
-        stopFlagLeft = 1
-        stopFlagForward = 1
-        stopFlagBackward = 0
-        stopFlagRight = 1
-    if (function == 'right'): #right
-        stopFlagLeft = 1
-        stopFlagForward = 1
-        stopFlagBackward = 1
-        stopFlagRight = 0
-    if (function == 'left'): #left
-        stopFlagLeft = 0
-        stopFlagForward = 1
-        stopFlagBackward = 1
-        stopFlagRight = 1
